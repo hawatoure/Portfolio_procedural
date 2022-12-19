@@ -1,0 +1,10 @@
+body{
+    max-width: 1920px;
+    width: 100%;
+    background-color: teal;
+    color: black;
+}
+.text-muted {
+    --bs-text-opacity: 1;
+    color: black!important;
+}
