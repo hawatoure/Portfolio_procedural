@@ -23,7 +23,7 @@
                 <a class="nav-link ">Me contacter</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="../../sitePhpProcedural/dashboard/creerUnAdminDuSite.php">Créer un compte</a>
+                <a class="nav-link" href="../../sitePhpProcedural/dashboard/createUser.php">Créer un compte</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="../../sitePhpProcedural/dashboard/index.php">log in</a>
