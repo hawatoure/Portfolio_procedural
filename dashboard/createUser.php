@@ -15,13 +15,18 @@
 
 <div class="container">
     <div class="row">
-    <h1>Admin</h1>
+    <h1 class="text-dark" >Admin</h1>
         <div class="col-4">
             <form class="form-group" action="" method="post">
                 <input type="text" class="mt-3 form-control" name="nom" placeholder="Votre nom">
                 <input type="text" class="mt-3 form-control" name="prenom" placeholder="Votre prenom">
                 <input type="email" class="mt-3 form-control" name="email" placeholder="Votre email">
                 <input type="password" class=" mt-3 form-control" name="password" placeholder="Votre mot de passe">
+                <input class="form-check-input" type="checkbox" name="isAdmin" id="isAdmin">
+                <label class="form-check-label text-dark" for="isAdmin">
+                            Administrateur
+                </label>
+            
                 <button type="submit" class="btn mt-3 text-align bg-primary fw-bold" name="soumettre">Enregistrer</button>
             </form>
             <?php
@@ -41,8 +46,15 @@
                 //encodage du mot de passe (12 est l'option de niveau d'encodage):
                 $option = ['cost => 12'];
                 $password = password_hash(trim($_POST["password"]),PASSWORD_DEFAULT, $option);
-                // on dit que 1 est admin pour le role
-                $role = 1;
+
+                //condition pour gérer la case administrateur
+                if(isset($_POST["isAdmin"])){
+                    $role = 1;
+                }else{
+                    $role = 2;
+                }
+
+              
                 //2 - Préparation de l'écriture SQL
                 $sql = "
                         INSERT INTO user (
