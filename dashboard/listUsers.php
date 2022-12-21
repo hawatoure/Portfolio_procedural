@@ -12,6 +12,7 @@
         exit;
     }
     require("../core/connexion.php");
+    
     $sql = "SELECT `id_user`, `nom`, `prenom`, `email`, `role` 
             FROM `user` ";
            $query = mysqli_query($connexion, $sql) or die(mysqli_error($connexion));
@@ -46,8 +47,9 @@
                 <th scope="col">Nom</th>
                 <th scope="col">Prénom</th>
                 <th scope="col">email</th>
-                <th scope="col">Rôle</th>   
-                <th>Supprimer</th>
+                <th scope="col">Rôle</th> 
+                <th>Modification</th>  
+                <th>Suppression</th>
             </tr>
             <tr>
         
@@ -57,10 +59,10 @@
 
             ?>
                 <tr>
-                    <td><?= $user['id_user']  ?></td>
+                    <td><a href='./detailsUser.php?id=<?=$user['id_user']?>'><?=$user['id_user']?><a></td>
                     <td><?= $user['nom']  ?></td>
                     <td><?= $user['prenom']  ?></td>
-                    <td><?= $user['email']  ?></td>
+                    <td><?= $user['email']  ?></td> 
                     <td><?php
                     if($user['role']==1){
                         echo "Administrateur";
@@ -68,8 +70,8 @@
                         echo "Utilisateur";
                     }
                      ?></td>
-                     <td><button class="btn bg-light">Supprimer</button></td>
-
+                     <td><a href='?actions=update&id=<?=$user['id_user']?>'>Modifier<a></td>
+                     <td><a href='?actions=delete&id=<?=$user['id_user']?>'>Supprimer<a></td>
                 </tr>
           <?php
                 // echo "<h4>Utilisateur : " . $user['nom']. "</h4>";
@@ -77,12 +79,46 @@
                 //     var_dump($user);
                 //     echo "</pre>";
             }
-
-
+        
             ?>
             </tr>
         </table>
- 
+
+        <button class="btn bg-light" name="update">Ajouter un utilisateur</button>
+
+
+        <?php if ($mode_edition == 1) { ?>
+        <h2>Edit user</h2>
+        <?php foreach ($users as $user) :  ?>
+
+        <form class="form-control" method="POST">
+
+            <label for="nom">Nom</label></br>
+            <input type="text" name="nom" placeholder="Votre nom" value="<?php echo $user['nom']; ?>"  /><br></br>
+            <label for="prenom">Prénom</label></br>
+            <input type="text" name="prenom" placeholder="Votre prenom" value="<?php echo $user['prenom']; ?>"  /><br></br>
+            <label for="email">Email</label></br>
+            <input name="email" placeholder="Votre email" value="<?php echo $user['email']; ?>" ></input><br></br>
+
+            <input type="submit" name="modifier" value="Modifier"/><br>
+        </form>
+
+        <?php endforeach; ?>
+
+  <?php } else { ?>
+    
+    <form method="POST">
+          <label for="nom">Nom</label></br>
+          <input type="text" name="nom" placeholder="Votre nom"/><br>
+          <label for="prenom">Prénom</label></br>
+          <input type="text" name="prenom" placeholder="Votre prenom" /><br>
+          <label for="email">Email</label></br>
+          <input name="email" placeholder="Votre email" ></input><br>
+
+        <input type="submit" name="enregistrer" value="Enregistrer" /><br>
+      </form>
+      <?php } ?>
+        
       
     </div>
 </main>
