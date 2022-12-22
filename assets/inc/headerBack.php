@@ -19,7 +19,7 @@
                 <a class="nav-link active" aria-current="page" href="#">Accueil Admin</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Gestion des utilistateurs</a>
+                <a class="nav-link" href="../../sitePhpProcedural/dashboard/listUsers.php">Gestion des utilistateurs</a>
                 </li>
                 <li class="nav-item">
                 <a class="nav-link" href="#">Gestion des compétences</a>

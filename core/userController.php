@@ -20,6 +20,12 @@
         case "log-out":
             logOut();
         break;
+        case "update":
+            updateUser();
+        break;
+        case "delete":
+            deleteUser();
+        break;
     endswitch;
 
     // les différentes fonctions de notre controleur
@@ -88,7 +94,103 @@
         //redirection vers page d'accueil du site
         $_SESSION["message"] = "Vous êtes déconnecté";
         header("Location:../dashboard/index.php");
-    
+        exit;
+    }
+
+    //Mise à jour des informations de l'utilisateur
+
+    function updateUser(){
+
+        //vérifie si les informations ont bien été envoyées
+        if(!isset($_POST['nom'], $_POST['prenom'],$_POST['email'],$_POST['role'], $_POST['id_user'])){
+                $_SESSION['message'] = "Les données de cet utilisateur ne sont pas définis";
+                header("Location:../dashboard/detailsUser.php?id_user=". $_POST['id_user']);
+        exit;
+        }
+
+
+
+
+        //Récupérer les infos envoyées par le formulaire
+        $nom = ucfirst(trim($_POST['nom']));
+        $prenom = ucfirst(trim($_POST['prenom']));
+        $email = strtolower(trim($_POST['email']));
+        $role = $_POST['role'];
+        $password1 = trim($_POST["password"]);
+        $id = $_POST['id_user'];
+
+        //validation des informations
+        if(strlen($nom) < 1 || strlen($nom) > 255 ){    
+                $_SESSION['message'] = "Le nom doit avoir entre 1 et 255 caractères";
+                header("Location:../dashboard/detailsUser.php?id_user=". $_POST['id_user']);
+        exit;
+        }
+        if(strlen($prenom) < 1 || strlen($prenom) > 255 ){
+                $_SESSION['message'] = "Le prénom doit avoir entre 1 et 255 caractères";
+                header("Location:../dashboard/detailsUser.php?id_user=". $_POST['id_user']);
+        exit;
+        }
+        if(strlen($email) < 1 || strlen($email) > 255 || !filter_var($email, FILTER_VALIDATE_EMAIL) ){
+
+                $_SESSION['message'] = "L'email est un invalide";
+                header("Location:../dashboard/detailsUser.php?id_user=". $_POST['id_user']);
+        exit;
+        
+        }
+        if(strlen($role) != 1 && strlen($role) != 2){
+
+            $_SESSION['message'] = "Le role n'existe pas";
+            header("Location:../dashboard/detailsUser.php?id_user=". $_POST['id_user']);
+        exit;
+        }
+
+        if(strlen($password1) < 1){
+
+            $_SESSION['message'] = "Mot de passe incorrect";
+            header("Location:../dashboard/detailsUser.php?id_user=". $_POST['id_user']);
+            exit;
+        }
+        //encodage du password
+        $option = ['cost => 12'];
+        $password1 = password_hash($password1,PASSWORD_DEFAULT, $option);
+        
+        //Les données sont validées, préparons-nous à les envoyer en bdd
+        require("connexion.php");
+
+        $sql = "UPDATE user 
+        SET 
+        `nom` = '$nom', 
+        `prenom` = '$prenom', 
+        `email` = '$email',
+        `role` = $role,
+        `password` = '$password1'
+        WHERE `id_user` = $id
+        ";
+        var_dump($sql);
+        var_dump($_POST);
+
+        $query = mysqli_query($connexion, $sql) or die(mysqli_error($connexion));
+        $_SESSION['message'] = "Les données ont bien été mises à jour";
+        header("Location:../dashboard/detailsUser.php?id_user=". $_POST['id_user']);
+        exit;
+
+  
+    }
+
+
+
+
+
+    function deleteUser(){
+        //recupération de la connexion
+        require("connexion.php");
+        //recupération de l'id dans l'input caché du formulaire du bouton qui à le name="id"
+        $id = $_POST['id'];
+        $sql = "DELETE FROM user WHERE id_user = $id";
+        $query = mysqli_query($connexion, $sql) or die(mysqli_error($connexion));
+        $_SESSION["message"] = "Lutilisateur a bien été supprimé";
+        header("Location:../dashboard/listUsers.php");
+
     }
 
     

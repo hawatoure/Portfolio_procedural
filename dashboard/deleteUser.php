@@ -11,64 +11,38 @@
         header("Location:../dashboard/index.php");
         exit;
     }
-    // choix de l'id à ajouter
-    $id = $_GET['id'];
 
-    require("../core/connexion.php");
 
-    $sql = "DELETE *
-            FROM user 
-            WHERE id_user = $id";
 
-    $query = mysqli_query($connexion, $sql) or die(mysqli_error($connexion));
-
-    $users = mysqli_fetch_assoc($query);
   
 
 ?>
-<title>Supprimer un utilisateur</title>
-
-<?php
-     include("../assets/inc/headerBack.php");  
-     echo "<pre>";
-     var_dump($user);
-     echo "</pre>";
-?>
-<!-- 1 . Afficher les information de l'utilisateur sur la page
-     2 . Afficher un utilisateur en fonction de son id quand on click dessus depuis la liste des utilisateurs
-        (listUsers.php) indice : paramètre GET dan l'url
-
--->
+      
 <main>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col- mt-3">
-                <h1 class="text-center">Sde l'utilisateur <?= $_GET["id"] ?></h1>
-            </div>
-        </div>
-        "<div class="row justify-content-center mt-4 text-center">
-          
-          
-     
-          <?php
-                // echo "<h4>Utilisateur : " . $user['nom']. "</h4>";
-                //     echo "<pre>";
-                //     var_dump($user);
-                //     echo "</pre>";
+    <div class="container text-center">
+  
+        <h2>Suppression de l'utilisateur</h2>
+        <?php
+        $id = $_GET["id_user"];
+        require("../core/connexion.php");
+        $sql = "SELECT id_user, nom, prenom, email, role
+        FROM user
+        WHERE id_user = $id
+        ";
+        $query = mysqli_query($connexion, $sql) or die(mysqli_error($connexion));
+        $users = mysqli_fetch_assoc($query);
+        ?>
 
-             
-                
-                echo 'Bienvenu sur le compte n° : '. $users['id_user']. "<br>";
-                echo $users['nom']." " ;
-                echo $users['prenom']. "<br>";
-                echo $users['email'];
-                
-
-            ?>
-        </div>
-        
-    
+        <h4>Attention vous êtes sur le point de supprimer l'user <?php echo $users["nom"] ." " . $users["prenom"] . " 😦 "?> </h4>
+        <a type="button" class="btn bg-white mt-5"  href="../dashboard/listUsers.php">Retour liste</a>
+        <form action="../core/userController.php" method="POST">
+            <input type="hidden" name="faire" value="delete">
+            <input type="hidden" name="id" value="<?= $users["id_user"]?>">
+            <button type="submit" class="btn bg-white mt-3">Supprimer</button>
+        </form>
     </div>
 </main>
 
-
+<?php
+include("../assets/inc/footerBack.php")
+?>

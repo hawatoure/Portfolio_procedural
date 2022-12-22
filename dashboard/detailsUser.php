@@ -12,11 +12,11 @@
         exit;
     }
     // choix de l'id à ajouter
-    $id = $_GET['id'];
+    $id = $_GET['id_user'];
 
     require("../core/connexion.php");
 
-    $sql = "SELECT `id_user`, `nom`, `prenom`, `email` 
+    $sql = "SELECT `id_user`, `nom`, `prenom`, `email`,`role` 
             FROM user 
             WHERE id_user = $id";
 
@@ -43,10 +43,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col- mt-3">
-                <h1 class="text-center">Détails de l'utilisateur <?= $_GET["id"] ?></h1>
+                <h1 class="text-center">Détails de l'utilisateur <?= $_GET["id_user"] ?></h1>
             </div>
         </div>
-        "<div class="row justify-content-center mt-4 text-center">
+        <div class="row justify-content-center mt-4 text-center">
           
           
      
@@ -58,18 +58,15 @@
 
              
                 
-                echo 'Bienvenu sur le compte n° : '. $users['id_user']. "<br>";
+                echo 'Bienvenue sur le compte n° : '. $users['id_user']. "<br>";
                 echo $users['nom']." " ;
-                echo $users['prenom']. "<br>";
+                echo $users['prenom'] . "<br>";
                 echo $users['email'];
                 
 
             ?>
+
         </div>
-        
-    
-    </div>
-</main>
 
 
 
